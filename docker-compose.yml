@@ -9,6 +9,8 @@ services:
     environment:
       PORT: 80
       DB_DSN: 'root:milkshake@tcp(mysql:3306)/myboard?charset=utf8&parseTime=true'
+    volumes:
+      - ".:/go/src/github.com/disiqueira/Go-Example"
     expose:
       - '80'
     ports:

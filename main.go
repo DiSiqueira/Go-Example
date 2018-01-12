@@ -1,15 +1,18 @@
 package main
 
 import (
-	"github.com/go-chi/chi"
 	"fmt"
+	"net/http"
+
 	"github.com/disiqueira/Go-Example/config"
-	"github.com/disiqueira/Go-Example/log"
 	"github.com/disiqueira/Go-Example/db"
+	dbb "github.com/disiqueira/Go-Example/db/board"
 	"github.com/disiqueira/Go-Example/handler"
 	"github.com/disiqueira/Go-Example/handler/board"
-	dbb "github.com/disiqueira/Go-Example/db/board"
-	"net/http"
+	"github.com/disiqueira/Go-Example/log"
+
+	"github.com/disiqueira/Go-Example/db/eventsource"
+	"github.com/go-chi/chi"
 )
 
 func main() {
@@ -24,12 +27,13 @@ func main() {
 	}
 
 	boardFinder := dbb.NewBoardFinder(dbMap)
+	eventSourceInserter := eventsource.NewEventSourceInserter(dbMap)
 	urlReader := handler.NewURLParamReader()
 
 	router := chi.NewRouter()
 	router.Route("/boards", func(r chi.Router) {
 		r.Get("/{boardID:[0-9]+}", board.NewBoardQuery(boardFinder, urlReader).ServeHTTP)
-		r.Post("/", board.NewBoardCommand(boardFinder, urlReader).ServeHTTP)
+		r.Post("/", board.NewBoardCommand(eventSourceInserter, urlReader).ServeHTTP)
 	})
 
 	if err := http.ListenAndServe(fmt.Sprintf(":%d", cfg.Port), router); err != nil {

@@ -9,11 +9,11 @@ RUN go get -u github.com/pressly/goose/cmd/goose
 
 # Application
 RUN go get -u github.com/Masterminds/glide/...
+RUN go get -u github.com/githubnemo/CompileDaemon
 
-ADD ./ ./src/github.com/disiqueira/Go-Example
+COPY . ./src/github.com/disiqueira/Go-Example
 WORKDIR ./src/github.com/disiqueira/Go-Example
 
-RUN make build-app
 EXPOSE 80
-CMD make run-app
 
+CMD CompileDaemon -build="make build-app" -command="./bin/Go-Example" -exclude-dir="./bin"

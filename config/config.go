@@ -16,8 +16,10 @@ type Config struct {
 // and returns an Config instance
 func NewConfig() (*Config, error) {
 	var cfg Config
-	if err := envconfig.Process("", &cfg); err != nil {
+	err := envconfig.Process("", &cfg)
+	if err != nil {
 		return nil, fmt.Errorf("NewConfig: %s", err)
 	}
+
 	return &cfg, nil
 }

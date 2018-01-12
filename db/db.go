@@ -11,6 +11,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 
 	"github.com/disiqueira/Go-Example/db/board"
+	"github.com/disiqueira/Go-Example/db/eventsource"
 )
 
 const maxConnectAttempts = 5
@@ -47,6 +48,7 @@ func NewDB(dsn string, maxOpen, maxIdle, attempt int) (*gorp.DbMap, error) {
 
 	// set mappings
 	dbMap.AddTableWithName(board.Board{}, "board").SetKeys(true, "ID")
+	dbMap.AddTableWithName(eventsource.EventSource{}, "eventsource").SetKeys(true, "ID")
 
 	return dbMap, nil
 }
