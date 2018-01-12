@@ -1,13 +1,9 @@
 package board
 
 import (
-	"encoding/json"
 	"net/http"
-	"strconv"
-
 	db "github.com/disiqueira/Go-Example/db/board"
 	"github.com/disiqueira/Go-Example/handler"
-	"github.com/disiqueira/Go-Example/log"
 )
 
 type (
